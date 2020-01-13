@@ -1,0 +1,118 @@
+type: edu
+custom_name: stage5
+files:
+- name: test/EncryptDecryptTest.java
+  visible: false
+  text: |
+    import encryptdecrypt.Main;
+    import org.hyperskill.hstest.v6.common.FileUtils;
+    import org.hyperskill.hstest.v6.stage.BaseStageTest;
+    import org.hyperskill.hstest.v6.testcase.CheckResult;
+    import org.hyperskill.hstest.v6.testcase.TestCase;
+
+    import java.util.List;
+
+    public class EncryptDecryptTest extends BaseStageTest<String> {
+        public EncryptDecryptTest() {
+            super(Main.class);
+        }
+
+        @Override
+        public List<TestCase<String>> generate() {
+            return List.of(
+                new TestCase<String>()
+                    .addArguments(
+                        "-mode", "enc",
+                        "-key", "5",
+                        "-in", "in.txt",
+                        "-out", "output.txt"
+                    )
+                    .setAttach("\\jqhtrj%yt%m~ujwxpnqq&")
+                    .addFile("in.txt", "Welcome to hyperskill!"),
+
+                new TestCase<String>()
+                    .addArguments(
+                        "-key", "0",
+                        "-mode", "enc",
+                        "-in", "input.txt",
+                        "-out", "output.txt"
+                    )
+                    .setAttach("Hello")
+                    .addFile("input.txt", "Hello"),
+
+                new TestCase<String>()
+                    .addArguments(
+                        "-key", "1",
+                        "-in", "i.txt",
+                        "-out", "output.txt",
+                        "-mode", "enc"
+                    )
+                    .setAttach("123456789")
+                    .addFile("i.txt", "012345678"),
+
+                new TestCase<String>()
+                    .addArguments(
+                        "-mode", "dec",
+                        "-in", "input.txt",
+                        "-out", "output.txt",
+                        "-key", "5"
+                    )
+                    .setAttach("Welcome to hyperskill!")
+                    .addFile("input.txt", "\\jqhtrj%yt%m~ujwxpnqq&"),
+
+                new TestCase<String>()
+                    .addArguments(
+                        "-mode", "dec",
+                        "-key", "0",
+                        "-in", "input.txt",
+                        "-out", "output.txt"
+                    )
+                    .setAttach("Hi")
+                    .addFile("input.txt", "Hi"),
+
+                new TestCase<String>()
+                    .addArguments(
+                        "-mode", "dec",
+                        "-key", "1",
+                        "-in", "input.txt",
+                        "-out", "output.txt"
+                    )
+                    .setAttach("111122223333")
+                    .addFile("input.txt", "222233334444")
+            );
+        }
+
+        @Override
+        public CheckResult check(String reply, String clue) {
+            String output = FileUtils.readFile("output.txt");
+            return new CheckResult(output.trim().equals(clue.trim()));
+        }
+    }
+  learner_created: false
+- name: src/encryptdecrypt/Main.java
+  visible: true
+  text: "package encryptdecrypt;\nimport java.util.*;\n\npublic class Main {\n   \
+    \ public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n\
+    \        \n        String action = \"enc\";\n        int shift = 0;\n        String\
+    \ message = \"\";\n\n        if(args[0].equals(\"-mode\")) {\n            action\
+    \ = args[1];\n        } else if(args.length >= 4 && args[2].equals(\"-mode\"))\
+    \ {\n            action = args[3];\n        } else if(args.length == 6 && args[4].equals(\"\
+    -mode\")) {\n            action = args[5];\n        }\n        \n        if(args[0].equals(\"\
+    -key\")) {\n            shift = Integer.parseInt(args[1]);\n        } else if(args.length\
+    \ >= 4 && args[2].equals(\"-key\")) {\n            shift = Integer.parseInt(args[3]);\n\
+    \        } else if(args.length == 6 && args[4].equals(\"-key\")) {\n         \
+    \   shift = Integer.parseInt(args[5]);\n        }\n        \n        if(args[0].equals(\"\
+    -data\")) {\n            message = args[1];\n        } else if(args.length >=\
+    \ 4 && args[2].equals(\"-data\")) {\n            message = args[3];\n        }\
+    \ else if(args.length == 6 && args[4].equals(\"-data\")) {\n            message\
+    \ = args[5];\n        }\n        \n        for(int i = 0; i < message.length();\
+    \ i++) {\n            if(action.equals(\"enc\")) {\n                System.out.print((char)\
+    \ (message.charAt(i) + shift));\n            } else {\n                System.out.print((char)\
+    \ (message.charAt(i) - shift));\n            }\n        }\n    }\n}"
+  learner_created: false
+- name: output.txt
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/projects/46/stages/249/implement
+status: Solved
+record: 5
